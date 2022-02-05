@@ -24,6 +24,8 @@ internal interface IExample
 
 internal class Example : IExample
 {
+
+    // Cyclic references are not allowed.
     public IAnother Another { get; set; }
     
     public IExample Examp { get; set; }
@@ -41,7 +43,6 @@ public class Program
 
         Console.WriteLine(Injector.Resolve<IExample>()?
                 .Another
-                .GetPassword())
-            ;
+                .GetPassword());
     }
 }
