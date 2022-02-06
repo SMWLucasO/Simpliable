@@ -19,16 +19,16 @@ public class Mapper : IMapper
     public TValue? ConvertTo<TKey, TValue>(TKey input)
         => MappingConversionBuilder<TKey, TValue>.Get()
             .SetPayload(input)
-            .SetCustomOptions(GetMappingOptions<TKey, TValue>())
+            .SetCustomOptions(GetMappingOptions<TKey>())
             .Build().FirstOrDefault();
 
     public IList<TValue> ConvertTo<TKey, TValue>(IList<TKey> input)
         => MappingConversionBuilder<TKey, TValue>.Get()
             .SetPayload(input)
-            .SetCustomOptions(GetMappingOptions<TKey, TValue>())
+            .SetCustomOptions(GetMappingOptions<TKey>())
             .Build();
 
-    private IMappingOptions? GetMappingOptions<TKey, TValue>()
+    private IMappingOptions? GetMappingOptions<TKey>()
     {
         var exists = Mappings.TryGetValue(typeof(TKey), out var options);
         if (!exists || options == null)
