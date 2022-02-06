@@ -30,7 +30,6 @@ public class Mapper : IMapper
 
     private IMappingOptions? GetMappingOptions<TKey, TValue>()
     {
-        // TODO: rather than throwing an exception, allow no mappings, some kind of default case.
         var exists = Mappings.TryGetValue(typeof(TKey), out var options);
         if (!exists || options == null)
             return null;
