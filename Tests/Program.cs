@@ -17,18 +17,17 @@ internal class Another : IAnother
 internal interface IExample
 {
     public IAnother Another { get; set; }
-    
+
     //public IExample Examp { get; set; }
-    
+
     public string GetName();
 }
 
 internal class Example : IExample
 {
-
     // Cyclic references are not allowed.
     public IAnother Another { get; set; }
-    
+
     //public IExample Examp { get; set; }
 
     public string GetName()
@@ -55,18 +54,30 @@ public class Program
         Injector.Map<IAnother, Another>();
 
         Injector.Map<IMapper, Mapper>();
-        
+
         Console.WriteLine(Injector.Resolve<IExample>()?
-                .Another
-                .GetPassword());
-        
-        Injector.Resolve<IMapper>().Map<A, B>(options =>
+            .Another
+            .GetPassword());
+
+        IMapper mapper = Injector.Resolve<IMapper>();
+
+        mapper.Map<A, B>(options =>
         {
-            options.MapProperty(x => x.Name, y => y.Name2)
-                .MapProperty(x => x.Id, y => y.Id);
+            options.MapProperty<A, B, string, string>(x => x.Name, y => y.Name2)
+                .MapProperty<A, B, int, int>(x => x.Id, y => y.Id);
         });
-        
-        
-        
+
+        var l = new List<A>()
+        {
+            new A {Id = 1, Name = "a"},
+            new A {Id = 2, Name = "b"},
+            new A {Id = 3, Name = "c"},
+            new A {Id = 4, Name = "d"},
+            new A {Id = 5, Name = "e"},
+            new A {Id = 6, Name = "f"},
+        };
+
+        var q = mapper.ConvertTo<A, B>(l);
+        foreach (var b in q) Console.WriteLine($"Id={b.Id} Name={b.Name2}");
     }
 }

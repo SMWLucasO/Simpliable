@@ -2,15 +2,12 @@
 
 namespace Simpliable.Mapper.Builders;
 
-public interface IMappingConversionBuilder<TKey, TValue> where TKey : class where TValue : class
+public interface IMappingConversionBuilder<TKey, TValue>
 {
     public IMappingConversionBuilder<TKey, TValue> SetPayload(IList<TKey> from);
     public IMappingConversionBuilder<TKey, TValue> SetPayload(TKey from);
     
-    public IMappingConversionBuilder<TKey, TValue> SetCustomOptions(IMappingOptions<TKey, TValue> options);
-
-    public IMappingConversionBuilder<TKey, TValue> BuildDefaultMappings();
-    public IMappingConversionBuilder<TKey, TValue> BuildCustomizedMappings();
+    public IMappingConversionBuilder<TKey, TValue> SetCustomOptions(IMappingOptions options);
 
     public IList<TValue> Build();
 
